@@ -50,8 +50,8 @@ export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
-            <div className="flex justify-start mb-4">
-                <Link href={route('employees.create')}> <Button>Add Employee</Button></Link>
+            <div className="m-4">
+                <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
             </div>
         </AppLayout>
     );
