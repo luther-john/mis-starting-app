@@ -4,6 +4,7 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { Link } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,6 +29,13 @@ interface Employee {
     department: string;
 }
 
+interface PageProps {
+    flash: {
+        message?: string
+    },
+    employees: Employee[]
+}
+
 export default function Index() {
 
     const { url } = usePage();
@@ -42,12 +50,8 @@ export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div>
-                    <Link href={route('employees.create')} className="inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">  
-                        Add Employee
-                    </Link>
-                </div>
+            <div className="flex justify-start mb-4">
+                <Link href={route('employees.create')}> <Button>Add Employee</Button></Link>
             </div>
         </AppLayout>
     );

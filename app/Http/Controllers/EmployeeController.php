@@ -11,8 +11,8 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $employee = Employees::all();
-        return inertia::render('Employees/Index', compact('employee'));
+        $employees = Employees::all();
+        return inertia::render('Employees/Index', compact('employees'));
     }
 
     public function create() {
@@ -37,6 +37,6 @@ class EmployeeController extends Controller
         ]);
 
         Employees::create($validated);
-        return redirect()->route('employee.index')->with('success', 'Employee created successfully.');
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 }

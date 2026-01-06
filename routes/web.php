@@ -16,8 +16,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('employee', [EmployeeController::class, 'index'])->name('employee.index');
-    Route::get('employee/create', [EmployeeController::class, 'create'])->name('employee.create');
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('employees', [EmployeeController::class, 'store'])->name('employees.store');
 });
 
 require __DIR__.'/settings.php';
