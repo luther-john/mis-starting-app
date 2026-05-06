@@ -1,8 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
-import { Link, Megaphone } from 'lucide-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Megaphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+declare const route: (...args: any[]) => string;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,11 +49,12 @@ interface PageProps {
 
 export default function Index() {
 
-    const page = usePage();
+    const { employees, flash } = usePage().props as PageProps;
 
-    const { employees, flash } = page.props as PageProps;
+    const {processing, delete: destroy} = useForm();
 
-    const { url } = page;
+    const { url } = usePage();
+
     const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
             'employees.create': '/employees/create',
@@ -69,8 +71,6 @@ export default function Index() {
         return routes[name] || url;
     };
 
-     const {processing, delete: destroy} = useForm()
-
     const handleDelete = (id: number, name: string) => {
         if(confirm(`Do you want to delete a product - ${id}. ${name}`)){
             destroy(route("employees.destroy", id));
@@ -83,7 +83,8 @@ export default function Index() {
             <div className="m-4">
                 <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
                 <div>
-                    <div className='m-4'>
+                    <div className='m-4'><div>
+                </div>
                 
             </div>
                     {employees.length > 0 && (

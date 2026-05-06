@@ -44,6 +44,28 @@ class EmployeeController extends Controller
         return inertia::render('Employees/Edit', compact('employee'));
     }
 
+    public function update(Request $request, Employees $employee){
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:employees,email,' . $employee->id,
+            'phone' => 'nullable|string|max:20',
+            'hire_date' => 'required|date',
+            'gender' => 'nullable|string|max:10',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
+            'position' => 'nullable|string|max:100',
+            'department' => 'nullable|string|max:100',
+        ]);
+
+        $employee->update($request->all());
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+    }
+    }
+
     public function destroy(Employees $employee){
         $employee->delete();
         return redirect()->route('employees.index')->with('message', 'Employee deleted successfully');
