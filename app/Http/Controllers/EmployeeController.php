@@ -39,4 +39,13 @@ class EmployeeController extends Controller
         Employees::create($validated);
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
+
+    public function edit(Employees $employee){
+        return inertia::render('Employees/Edit', compact('employee'));
+    }
+
+    public function destroy(Employees $employee){
+        $employee->delete();
+        return redirect()->route('employees.index')->with('message', 'Employee deleted successfully');
+    }
 }

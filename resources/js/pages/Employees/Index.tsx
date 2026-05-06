@@ -1,9 +1,8 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-import { Link } from 'lucide-react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { Link, Megaphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -14,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,16 +48,28 @@ interface PageProps {
 
 export default function Index() {
 
-    const { employees, flash } = usePage().props as PageProps;
+    const page = usePage();
 
-    const { url } = usePage();
-    
-    const route = (name: string): string => {
+    const { employees, flash } = page.props as PageProps;
+
+    const { url } = page;
+    const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
             'employees.create': '/employees/create',
+            'employees.edit': '/employees/',
+            'employees.destroy': '/employees/',
         };
+        if (param !== undefined && routes[name]) {
+            if (name === 'employees.edit') {
+                return routes[name] + param + '/edit';
+            } else if (name === 'employees.destroy') {
+                return routes[name] + param;
+            }
+        }
         return routes[name] || url;
     };
+
+     const {processing, delete: destroy} = useForm()
 
     const handleDelete = (id: number, name: string) => {
         if(confirm(`Do you want to delete a product - ${id}. ${name}`)){
@@ -71,6 +83,9 @@ export default function Index() {
             <div className="m-4">
                 <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
                 <div>
+                    <div className='m-4'>
+                
+            </div>
                     {employees.length > 0 && (
                 <div className='m-4'>
                     <Table>
