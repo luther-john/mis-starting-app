@@ -5,6 +5,15 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { Link } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,6 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface Employee {
+    id: number;
     first_name: string;
     last_name: string;
     email: string;
@@ -38,6 +48,8 @@ interface PageProps {
 
 export default function Index() {
 
+    const { employees, flash } = usePage().props as PageProps;
+
     const { url } = usePage();
     
     const route = (name: string): string => {
@@ -47,11 +59,52 @@ export default function Index() {
         return routes[name] || url;
     };
 
+    const handleDelete = (id: number, name: string) => {
+        if(confirm(`Do you want to delete a product - ${id}. ${name}`)){
+            destroy(route("employees.destroy", id));
+        }
+    }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employees" />
             <div className="m-4">
                 <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
+                <div>
+                    {employees.length > 0 && (
+                <div className='m-4'>
+                    <Table>
+                        <TableCaption>A list of your recent employees.</TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[100px]">ID</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Price</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead className="text-center">Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {employees.map((employee) => (
+                                <TableRow>
+                                    <TableCell className="font-medium">{employee.id}</TableCell>
+                                    <TableCell>{employee.first_name} {employee.last_name}</TableCell>
+                                    <TableCell>{employee.email}</TableCell>
+                                    <TableCell>{employee.phone}</TableCell>
+                                    <TableCell className="text-center space-x-2">
+                                        <Link href={route('employees.edit', employee.id)}><Button className="bg-slate-600 hover:bg-slate-700">Edit</Button></Link>
+                                        <Button onClick={() => handleDelete(employee.id, employee.first_name)} className="bg-red-500 hover:bg-red-700">Delete</Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                           
+                        </TableBody>
+                    </Table>
+
+                </div>
+
+            )}
+                </div>
             </div>
         </AppLayout>
     );
