@@ -50,7 +50,7 @@ export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create a New Employee" />
-            <div className="max-w-lg mx-auto p-4 border rounded">
+            <div className="relative min-h-[80vh] flex-1 overflow-hidden p-4 gap-2 rounded-xl border border-sidebar-border/50 md:min-h-min dark:border-sidebar-border">
                 <form onSubmit={handleSubmit} >
                     {Object.keys(errors).length > 0 && (
                         <Alert variant="destructive" className="mb-4">
@@ -91,38 +91,46 @@ export default function Index() {
                             <Label htmlFor="gender">Gender</Label>
                             <Input placeholder="Gender" value={data.gender} onChange={(e) => setData('gender', e.target.value)}></Input>
                         </div>
-                    </div>
-                  
+                    </div>                 
                    
                     
                     <div className='gap-1.5'>
                         <Label htmlFor="address">Address</Label>
                         <Textarea placeholder="Address" value={data.address} onChange={(e) => setData('address', e.target.value)} />
                     </div>
-                    <div className='gap-1.5'>
+
+                    <div className="grid grid-flow-col auto-cols-max gap-4 md:grid-cols-3">
+                        <div className='gap-1.5'>
                         <Label htmlFor="city">City</Label>
                         <Input placeholder="City" value={data.city} onChange={(e) => setData('city', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="state">State</Label>
+                            <Input placeholder="State" value={data.state} onChange={(e) => setData('state', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="zip_code">Zip Code</Label>
+                            <Input placeholder="Zip Code" value={data.zip_code} onChange={(e) => setData('zip_code', e.target.value)}></Input>
+                        </div>
                     </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="state">State</Label>
-                        <Input placeholder="State" value={data.state} onChange={(e) => setData('state', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="zip_code">Zip Code</Label>
-                        <Input placeholder="Zip Code" value={data.zip_code} onChange={(e) => setData('zip_code', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
+
+                    <div className="grid grid-flow-col auto-cols-max gap-4 mb-5 md:grid-cols-3">
+                        <div className='gap-1.5'>
                         <Label htmlFor="country">Country</Label>
                         <Input placeholder="Country" value={data.country} onChange={(e) => setData('country', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="position">Position</Label>
+                            <Input placeholder="Position" value={data.position} onChange={(e) => setData('position', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="department">Department</Label>
+                            <Input placeholder="Department" value={data.department} onChange={(e) => setData('department', e.target.value)}></Input>
+                        </div>
+
                     </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="position">Position</Label>
-                        <Input placeholder="Position" value={data.position} onChange={(e) => setData('position', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="department">Department</Label>
-                        <Input placeholder="Department" value={data.department} onChange={(e) => setData('department', e.target.value)}></Input>
-                    </div>
+                    
+                    
                     <Button type="submit" disabled={processing}>
                         Employee
                     </Button>
