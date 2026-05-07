@@ -59,11 +59,11 @@ class EmployeeController extends Controller
             'country' => 'nullable|string|max:100',
             'position' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
+
         ]);
 
         $employee->update($request->all());
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
-    }
     }
 
     public function destroy(Employees $employee){

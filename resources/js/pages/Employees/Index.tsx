@@ -95,8 +95,10 @@ export default function Index() {
                             <TableRow>
                                 <TableHead className="w-[100px]">ID</TableHead>
                                 <TableHead>Name</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Description</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Mobile Number</TableHead>
+                                <TableHead>Date Hired</TableHead>
+                                <TableHead>Address</TableHead>
                                 <TableHead className="text-center">Action</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -107,6 +109,8 @@ export default function Index() {
                                     <TableCell>{employee.first_name} {employee.last_name}</TableCell>
                                     <TableCell>{employee.email}</TableCell>
                                     <TableCell>{employee.phone}</TableCell>
+                                    <TableCell>{employee.hire_date}</TableCell>
+                                    <TableCell>{employee.address}, {employee.city}, {employee.state}, {employee.zip_code}, {employee.country}</TableCell>
                                     <TableCell className="text-center space-x-2">
                                         <Link href={route('employees.edit', employee.id)}><Button className="bg-slate-600 hover:bg-slate-700">Edit</Button></Link>
                                         <Button onClick={() => handleDelete(employee.id, employee.first_name)} className="bg-red-500 hover:bg-red-700">Delete</Button>

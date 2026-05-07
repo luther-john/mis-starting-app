@@ -50,8 +50,8 @@ export default function Index() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create a New Employee" />
-            <div>
-                <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 border rounded">
+            <div className="max-w-lg mx-auto p-4 border rounded">
+                <form onSubmit={handleSubmit} >
                     {Object.keys(errors).length > 0 && (
                         <Alert variant="destructive" className="mb-4">
                             <AlertTitle>There were some errors with your submission</AlertTitle>
@@ -62,31 +62,39 @@ export default function Index() {
                             </AlertDescription>
                         </Alert>
                     )}
+                    <div className="grid grid-flow-col auto-cols-max gap-4 lg:grid-cols-4">
+                        <div className='gap-1.5'>
+                            <Label htmlFor="first name">First Name</Label>
+                            <Input placeholder="First Name" value={data.first_name} onChange={(e) => setData('first_name', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="last name">Last Name</Label>
+                            <Input placeholder="Last Name" value={data.last_name} onChange={(e) => setData('last_name', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="email address">Email Address</Label>
+                            <Input placeholder="Email Address" value={data.email} onChange={(e) => setData('email', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="phone number">Phone Number</Label>
+                            <Input placeholder="Phone Number" value={data.phone} onChange={(e) => setData('phone', e.target.value)}></Input>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-flow-col auto-cols-max gap-4 md:grid-cols-3">
+                        
+                        <div className='gap-1.5'>
+                            <Label htmlFor="hire date">Hire Date</Label>
+                            <Input placeholder="Hire Date M/D/YYYY" value={data.hire_date} onChange={(e) => setData('hire_date', e.target.value)}></Input>
+                        </div>
+                        <div className='gap-1.5'>
+                            <Label htmlFor="gender">Gender</Label>
+                            <Input placeholder="Gender" value={data.gender} onChange={(e) => setData('gender', e.target.value)}></Input>
+                        </div>
+                    </div>
                   
-                    <div className='gap-1.5'>
-                        <Label htmlFor="first name">First Name</Label>
-                        <Input placeholder="First Name" value={data.first_name} onChange={(e) => setData('first_name', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="last name">Last Name</Label>
-                        <Input placeholder="Last Name" value={data.last_name} onChange={(e) => setData('last_name', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="email address">Email Address</Label>
-                        <Input placeholder="Email Address" value={data.email} onChange={(e) => setData('email', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="phone number">Phone Number</Label>
-                        <Input placeholder="Phone Number" value={data.phone} onChange={(e) => setData('phone', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="hire date">Hire Date</Label>
-                        <Input placeholder="Hire Date M/D/YYYY" value={data.hire_date} onChange={(e) => setData('hire_date', e.target.value)}></Input>
-                    </div>
-                    <div className='gap-1.5'>
-                        <Label htmlFor="gender">Gender</Label>
-                        <Input placeholder="Gender" value={data.gender} onChange={(e) => setData('gender', e.target.value)}></Input>
-                    </div>
+                   
+                    
                     <div className='gap-1.5'>
                         <Label htmlFor="address">Address</Label>
                         <Textarea placeholder="Address" value={data.address} onChange={(e) => setData('address', e.target.value)} />

@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { CircleAlert } from 'lucide-react';
 
 interface Employee {
@@ -14,12 +14,12 @@ interface Employee {
     last_name: string;
     email: string;
     phone: string;
-    hire_date: string;
+    hire_date: number;
     gender: string;
     address: string;
     city: string;
     state: string;
-    zip_code: number;
+    zip_code: string;
     country: string;
     position: string;
     department: string;
@@ -34,8 +34,27 @@ export default function Edit({employee} : Props) {
     const {data, setData, put, processing, errors } = useForm({
         first_name: employee.first_name,
         last_name: employee.last_name,
-        email: employee.email
+        email: employee.email,
+        phone: employee.phone,
+        hire_date: employee.hire_date,
+        gender: employee.gender,
+        address: employee.address,
+        city: employee.city,
+        state: employee.state,
+        zip_code: employee.zip_code,
+        country: employee.country,
+        position: employee.position,
+        department: employee.department,
     });
+
+    const { url } = usePage();
+
+    const route = (name: string, id: number): string => {
+        const routes: Record<string, string> = {
+            'employees.update': `/employees/${employee.id}`,
+        };
+        return routes[name] || url;
+    };
 
 
 
@@ -78,6 +97,47 @@ export default function Edit({employee} : Props) {
                         <Label htmlFor="employee email">Email</Label>
                         <Input placeholder="Email" value={data.email} onChange={(e) => setData('email', e.target.value)}></Input>
                     </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee phone">Mobile Number</Label>
+                        <Input placeholder="Mobile Number" value={data.phone} onChange={(e) => setData('phone', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee hire date">Date Hired</Label>
+                        <Input type="date" value={data.hire_date} onChange={(e) => setData('hire_date', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee gender">Gender</Label>
+                        <Input placeholder="Gender" value={data.gender} onChange={(e) => setData('gender', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee address">Address</Label>
+                        <Input placeholder="Address" value={data.address} onChange={(e) => setData('address', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee city">City</Label>
+                        <Input placeholder="City" value={data.city} onChange={(e) => setData('city', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee state">State</Label>
+                        <Input placeholder="State" value={data.state} onChange={(e) => setData('state', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee zip code">Zip Code</Label>
+                        <Input placeholder="Zip Code" value={data.zip_code} onChange={(e) => setData('zip_code', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee country">Country</Label>
+                        <Input placeholder="Country" value={data.country} onChange={(e) => setData('country', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee position">Position</Label>
+                        <Input placeholder="Position" value={data.position} onChange={(e) => setData('position', e.target.value)}></Input>
+                    </div>
+                    <div className='gap-1.5'>
+                        <Label htmlFor="employee department">Department</Label>
+                        <Input placeholder="Department" value={data.department} onChange={(e) => setData('department', e.target.value)}></Input>
+                    </div>
+
                     <Button disabled={processing} type="submit">Update Employee</Button>
                 </form>
             </div>
