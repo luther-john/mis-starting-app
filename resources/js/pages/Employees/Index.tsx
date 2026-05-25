@@ -18,7 +18,7 @@ declare const route: (...args: any[]) => string;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Employees',
+        title: 'Add Employees',
         href: '/employees',
     },
 ];
@@ -79,7 +79,7 @@ export default function Index() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Employees" />
+            <Head title="Add Employees" />
             <div className="m-4">
                 <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
                 <div>
@@ -88,11 +88,11 @@ export default function Index() {
                 
             </div>
                     {employees.length > 0 && (
-                <div className='m-4'>
-                    <Table>
+                <div className='overflow-hidden rounded-lg border border bg-black shadow-sm m-4'>
+                    <Table className="w-full table-auto">
                         <TableCaption>A list of your recent employees.</TableCaption>
                         <TableHeader>
-                            <TableRow>
+                            <TableRow className='bg-gray-700 text-white'>
                                 <TableHead className="w-[100px]">ID</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
