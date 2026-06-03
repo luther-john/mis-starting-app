@@ -18,7 +18,7 @@ declare const route: (...args: any[]) => string;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Add Employees',
+        title: 'List of Employees',
         href: '/employees',
     },
 ];
@@ -79,7 +79,7 @@ export default function Index() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Employees" />
+            <Head title="List of Employees" />
             <div className="m-4">
                 <Link href={route('employees.create')}> <Button variant={"secondary"}>Add Employee</Button></Link>
                 <div>
@@ -102,7 +102,7 @@ export default function Index() {
                                 <TableHead className="text-center">Action</TableHead>
                             </TableRow>
                         </TableHeader>
-                        <TableBody>
+                        <TableBody className='bg-white text-black'>
                             {employees.map((employee) => (
                                 <TableRow>
                                     <TableCell className="font-medium">{employee.id}</TableCell>
@@ -112,8 +112,8 @@ export default function Index() {
                                     <TableCell>{employee.hire_date}</TableCell>
                                     <TableCell>{employee.address}, {employee.city}, {employee.state}, {employee.zip_code}, {employee.country}</TableCell>
                                     <TableCell className="text-center space-x-2">
-                                        <Link href={route('employees.edit', employee.id)}><Button className="bg-slate-600 hover:bg-slate-700">Edit</Button></Link>
-                                        <Button onClick={() => handleDelete(employee.id, employee.first_name)} className="bg-red-500 hover:bg-red-700">Delete</Button>
+                                        <Link href={route('employees.edit', employee.id)}><Button className="bg-slate-600 hover:bg-slate-700 cursor-pointer">Edit</Button></Link>
+                                        <Button onClick={() => handleDelete(employee.id, employee.first_name)} className="bg-red-500 hover:bg-red-700 cursor-pointer">Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
