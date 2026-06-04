@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Departments;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\TryCatch;
 class DepartmentController extends Controller
 {
     /**
@@ -29,13 +31,23 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        try{
+            $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
-        ]);
+            ]);
 
-        Departments::create($validated);
-        return redirect()->route('departments.index')->with('success', 'Department created successfully.');
+            $department = Departments::create($validated);
+
+            if ($department) {
+                return redirect()->route('departments.index')->with('success', 'Department created successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Failed to create department. Please try again.');
+            }
+        } catch(\Exception $e) {
+            Log::error('Error creating department: ' . $e->getMessage());
+        }
+        
     }
 
     /**
@@ -49,7 +61,7 @@ class DepartmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Department $department)
+    public function edit(Departments $department)
     {
         //
     }

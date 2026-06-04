@@ -21,13 +21,14 @@ export default function Index() {
     
     const route = (name: string): string => {
         const routes: Record<string, string> = {
-            'employees.store': '/employees',
+            'departments.store': '/departments',
         };
         return routes[name] || url;
     };
 
-    const {data, setData, post, processing, errors} = useForm({
-        department: ""
+    const {data, setData, post, processing, errors, reset} = useForm({
+        name: "",
+        description: ""
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -52,14 +53,24 @@ export default function Index() {
                     )}
                     <div className="grid grid-flow-col auto-cols-max gap-4 lg:grid-cols-4 p-4">
                         <div className='gap-1.5'>
-                            <Label htmlFor="department">Department</Label>
-                            <Input placeholder="Department" value={data.department} onChange={(e) => setData('department', e.target.value)}></Input>
+                            <Label htmlFor="name">Name</Label>
+                            <Input 
+                                placeholder="Name" 
+                                value={data.name} onChange={(e) => setData('name', e.target.value)} 
+                            />
                         </div>
-                        
+                        <div className='gap-1.5'>
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea 
+                                placeholder="Description" 
+                                value={data.description} 
+                                onChange={(e) => setData('description', e.target.value)} 
+                            />
+                        </div>
                     </div>
                     
                     <Button type="submit" disabled={processing}>
-                        Department
+                        Create Department
                     </Button>
                 </form>
             </div>

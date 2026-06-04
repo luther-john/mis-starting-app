@@ -33,7 +33,7 @@ class EmployeeController extends Controller
             'zip_code' => 'nullable|string|max:20',
             'country' => 'nullable|string|max:100',
             'position' => 'nullable|string|max:100',
-            'department' => 'nullable|string|max:100',
+            'department' => 'required|string|max:100',
         ]);
 
         Employees::create($validated);

@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Megaphone } from 'lucide-react';
+import { Megaphone, Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useEffect, useState } from 'react';
 
 declare const route: (...args: any[]) => string;
 
@@ -31,14 +32,27 @@ interface Department {
 
 interface PageProps {
     flash?: {
-        message?: string
+        success?: string,
+        error?: string
     },
     departments: Department[]
 }
 
-export default function Index(props: PageProps) {
+export default function Index() {
 
-    const { departments, flash } = usePage().props as PageProps;
+    const { flash } = usePage<{flash?: { success?: string, error?: string }}>().props;
+    const flashMessage = flash?.success || flash?.error;
+    const [ showAlert, setShowAlert] = useState(flashMessage ? true : false);
+    useEffect(() => {
+        if (flashMessage) {
+            const timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flashMessage]);
+
+    const { departments } = usePage().props as PageProps;
 
     const {processing, delete: destroy} = useForm();
 
@@ -66,9 +80,6 @@ export default function Index(props: PageProps) {
         }
     }
 
-     const message = props.flash?.message ?? '';
-
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="List of Departments" />
@@ -76,7 +87,13 @@ export default function Index(props: PageProps) {
                 <Link href={route('departments.create')}> <Button variant={"secondary"}>Add Department</Button></Link>
                 <div>
                     <div className='m-4'>
-                        {message ? <div className="flash">{message}</div> : null}
+                        { showAlert && flashMessage && (
+                            <Alert variant="default" className={flash?.success ? 'border-green-500' : 'border-red-500'}>
+                                <Megaphone className="h-4 w-4" />
+                                <AlertTitle>{flash?.success ? 'Success' : 'Error'}</AlertTitle>
+                                <AlertDescription>{ flashMessage }</AlertDescription>
+                            </Alert>
+                        )}
                     <div>
                 </div>
                 
@@ -89,17 +106,29 @@ export default function Index(props: PageProps) {
                             <TableRow className='bg-gray-700 text-white'>
                                 <TableHead className="w-[100px]">ID</TableHead>
                                 <TableHead>Name</TableHead>
+                                <TableHead>Description</TableHead>
                                 <TableHead className="text-center">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody className='bg-white text-black'>
                             {departments.map((department) => (
-                                <TableRow>
+                                <TableRow key={department.id}>
                                     <TableCell className="font-medium">{department.id}</TableCell>
                                     <TableCell>{department.name}</TableCell>
+                                    <TableCell>{department.description}</TableCell>
                                     <TableCell className="text-center space-x-2">
-                                        <Link href={route('departments.edit', department.id)}><Button className="bg-slate-600 hover:bg-slate-700 cursor-pointer">Edit</Button></Link>
-                                        <Button onClick={() => handleDelete(department.id, department.name)} className="bg-red-500 hover:bg-red-700 cursor-pointer">Delete</Button>
+                                        <Link 
+                                            as="button" 
+                                            href={route('departments.edit', department.id)}
+                                            className="bg-blue-500 rounded-lg p-2 hover:bg-blue-700 cursor-pointer"> 
+                                        <Pencil size={20} /> 
+                                        </Link>
+                                        <Link 
+                                            as="button" 
+                                            onClick={() => handleDelete(department.id, department.name)} 
+                                            className="bg-red-500 rounded-lg p-2 hover:bg-red-700 cursor-pointer">
+                                            <Trash size={20} />
+                                        </Link>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -109,6 +138,7 @@ export default function Index(props: PageProps) {
                 </div>
 
             )}
+                    <div><p>test</p></div>
                 </div>
             </div>
         </AppLayout>
