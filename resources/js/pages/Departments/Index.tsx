@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { Megaphone, Pencil, Trash } from 'lucide-react';
+import { Eye, Megaphone, Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -61,13 +61,17 @@ export default function Index() {
     const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
             'departments.create': '/departments/create',
+            'departments.show': '/departments/',
             'departments.edit': '/departments/',
             'departments.destroy': '/departments/',
         };
         if (param !== undefined && routes[name]) {
-            if (name === 'departments.edit') {
+            if (name === 'departments.show') {
+                return routes[name] + param + '/show';
+            } else if (name === 'departments.edit') {
                 return routes[name] + param + '/edit';
-            } else if (name === 'departments.destroy') {
+            }
+            else if (name === 'departments.destroy') {
                 return routes[name] + param;
             }
         }
@@ -119,6 +123,12 @@ export default function Index() {
                                     <TableCell className="text-center space-x-2">
                                         <Link 
                                             as="button" 
+                                            href={route('departments.show', department.id)}
+                                            className="bg-blue-500 rounded-lg p-2 hover:bg-blue-700 cursor-pointer"> 
+                                        <Eye size={20} /> 
+                                        </Link>
+                                        <Link 
+                                            as="button" 
                                             href={route('departments.edit', department.id)}
                                             className="bg-blue-500 rounded-lg p-2 hover:bg-blue-700 cursor-pointer"> 
                                         <Pencil size={20} /> 
@@ -138,7 +148,6 @@ export default function Index() {
                 </div>
 
             )}
-                    <div><p>test</p></div>
                 </div>
             </div>
         </AppLayout>

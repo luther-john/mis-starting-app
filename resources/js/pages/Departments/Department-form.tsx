@@ -1,60 +1,100 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 
-export default function Create({...props}) {
+export default function DepartmentForm({...props}) {
 
-    const { department} = props;
+const { department, isView, isEdit } = props;
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Create Department',
-            href: '/departments/create',
-        },
-    ];
+console.log('DepartmentForm props:', props);
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: `${isView ? 'Show' : (isEdit ? 'Update' : 'Create')}  Departments`,
+        href: '/department-form',
+    },
+];
+
+interface Department {
+    id: number;
+    name: string;
+    description: string | null;
+}
+
+interface PageProps {
+    flash?: {
+        success?: string,
+        error?: string
+    },
+    departments: Department[]
+}
+
+    const { flash } = usePage<{flash?: { success?: string, error?: string }}>().props;
+    const flashMessage = flash?.success || flash?.error;
+    const [ showAlert, setShowAlert] = useState(flashMessage ? true : false);
+    useEffect(() => {
+        if (flashMessage) {
+            const timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flashMessage]);
+
+    const { departments } = usePage().props as PageProps;
 
     const { url } = usePage();
 
     const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
-            'departments.create': '/departments/create',
             'departments.index': '/departments/',
-            'departments.destroy': '/departments/',
+            'departments.update': '/departments/{id}/update',
         };
         if (param !== undefined && routes[name]) {
             if (name === 'departments.index') {
                 return routes[name] + param + '/index';
-            } else if (name === 'departments.destroy') {
-                return routes[name] + param;
             }
         }
         return routes[name] || url;
     };
 
-    const {data, setData, post, processing, errors, reset} = useForm({
+     const {data, setData, put, processing, errors, reset} = useForm({
         name: department?.name || '',
         description: department?.description || ''
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('departments.store'));
+
+        if (isEdit) {
+            put(route('departments.update', department.id), {
+                forceFormData: true,
+                onSuccess: () => reset(),
+            });
+        } else {
+            put(route('departments.store'), {
+                onSuccess: () => reset(),
+            });
+        }
+
+        //post(route('departments.update', department.id));
     }
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create a New Department" />
+            <Head title={`${isView ? 'Show' : (isEdit ? 'Update' : '')}  Departments`} />
             <div className="m-4">
                 <Link href={route('departments.index')}> <Button variant={"secondary"}>Back Department</Button></Link>
             </div>
-            <div className="relative min-h-[80vh] flex-1 overflow-hidden p-4 gap-2 rounded-xl border border-sidebar-border/50 md:min-h-min dark:border-sidebar-border">
+            <div>
                 <form onSubmit={handleSubmit} >
                     {Object.keys(errors).length > 0 && (
                         <Alert variant="destructive" className="mb-4">
@@ -70,8 +110,10 @@ export default function Create({...props}) {
                         <div className='gap-1.5'>
                             <Label htmlFor="name">Name</Label>
                             <Input 
+                                className="mb-4"
                                 placeholder="Name" 
                                 value={data.name} onChange={(e) => setData('name', e.target.value)} 
+                                disabled={isView}
                             />
 
                             <Label htmlFor="description">Description</Label>
@@ -80,16 +122,20 @@ export default function Create({...props}) {
                                 placeholder="Description" 
                                 value={data.description} 
                                 onChange={(e) => setData('description', e.target.value)} 
+                                disabled={isView}
                             />
+
+                            {isEdit && (
                             <Button type="submit" disabled={processing}>
-                                Create Department
+                                Update Department
                             </Button>
+                            )}
                         </div>
-                    </div>                   
+                        
+                    </div>
                     
                 </form>
             </div>
-            
         </AppLayout>
     );
 }

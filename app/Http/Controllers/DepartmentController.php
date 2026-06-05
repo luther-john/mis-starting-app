@@ -55,7 +55,10 @@ class DepartmentController extends Controller
      */
     public function show(Departments $department)
     {
-        //
+        return Inertia::render('Departments/Department-form', [
+            'department' => $department,
+            'isView' => true,
+        ]);
     }
 
     /**
@@ -63,7 +66,10 @@ class DepartmentController extends Controller
      */
     public function edit(Departments $department)
     {
-        //
+        return Inertia::render('Departments/Department-form', [
+            'department' => $department,
+            'isEdit' => true,
+        ]);
     }
 
     /**
@@ -71,7 +77,21 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Departments $department)
     {
-        //
+        dd($request, $department);
+        //  try {
+        //     if ($department) {
+        //         $department->name        = $request->name;
+        //         $department->description = $request->description;
+
+        //         $department->save();
+
+        //         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+        //     }
+        //     return redirect()->back()->with('error', 'Unable to update department. Please try again!');
+
+        // } catch (\Exception $e) {
+        //     Log::error('Department update failed: ' . $e->getMessage());
+        // }
     }
 
     /**
