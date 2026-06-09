@@ -24,9 +24,9 @@ export default function Create({...props}) {
 
     const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
-            'departments.create': '/departments/create',
             'departments.index': '/departments/',
-            'departments.destroy': '/departments/',
+            'departments.store': '/departments'
+            
         };
         if (param !== undefined && routes[name]) {
             if (name === 'departments.index') {

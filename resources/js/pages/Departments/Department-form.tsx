@@ -55,7 +55,7 @@ interface PageProps {
     const route = (name: string, param?: string | number): string => {
         const routes: Record<string, string> = {
             'departments.index': '/departments/',
-            'departments.update': '/departments/{id}/update',
+            'departments.update': `/departments/${department.id}`,
         };
         if (param !== undefined && routes[name]) {
             if (name === 'departments.index') {
@@ -66,8 +66,8 @@ interface PageProps {
     };
 
      const {data, setData, put, processing, errors, reset} = useForm({
-        name: department?.name || '',
-        description: department?.description || ''
+        name: department.name,
+        description: department.description
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -78,13 +78,7 @@ interface PageProps {
                 forceFormData: true,
                 onSuccess: () => reset(),
             });
-        } else {
-            put(route('departments.store'), {
-                onSuccess: () => reset(),
-            });
         }
-
-        //post(route('departments.update', department.id));
     }
 
 

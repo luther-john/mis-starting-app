@@ -77,21 +77,20 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Departments $department)
     {
-        dd($request, $department);
-        //  try {
-        //     if ($department) {
-        //         $department->name        = $request->name;
-        //         $department->description = $request->description;
+        try {
+            if ($department) {
+                $department->name        = $request->name;
+                $department->description = $request->description;
 
-        //         $department->save();
+                $department->save();
 
-        //         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
-        //     }
-        //     return redirect()->back()->with('error', 'Unable to update department. Please try again!');
+                return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+            }
+            return redirect()->back()->with('error', 'Unable to update department. Please try again!');
 
-        // } catch (\Exception $e) {
-        //     Log::error('Department update failed: ' . $e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            Log::error('Department update failed: ' . $e->getMessage());
+        }
     }
 
     /**

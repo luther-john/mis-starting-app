@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');    
     Route::get('departments/{department}/show', [DepartmentController::class, 'show'])->name('departments.show');
     Route::get('departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-    Route::put('departments/{department}/update', [DepartmentController::class, 'update'])->name('departments.update');
+    Route::put('departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
     Route::delete('/departments/{department}', [DepartmentController::class, "destroy"])->name('departments.destroy');
 });
 
